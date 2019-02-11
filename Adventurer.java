@@ -16,6 +16,7 @@ public class Adventurer extends JLabel implements KeyListener{
 	int jumpCount = 25;
 	int gravity = 3;
 	public boolean plat = false, jump;
+	static Inventory inven = new Inventory();
 	public static boolean[] keyss = new boolean[256];
 	static public int health = 20, maxHealth = 20;
 	int jumpCounter;
@@ -63,7 +64,9 @@ public class Adventurer extends JLabel implements KeyListener{
 		return keyss[key];
 	}
 	public void Update() {
-		
+		if((iskeyDown(KeyEvent.VK_I)) && AdventureManager.currentRoom.t.isRunning()){
+			inven.start();
+		}
 		if(iskeyDown(KeyEvent.VK_W)){
 			jump();
 		}
