@@ -14,7 +14,6 @@ public class Inventory{
  public void start() {
 	 	
 	 AdventureManager.currentRoom.t.stop();
-		System.out.println("Yass");
 		inventoryPanel.setSize(1194, 771);
 		inventoryPanel.setIcon(inventoryB);
 		inventoryPanel.setLocation(0,0);
@@ -41,7 +40,8 @@ public class Inventory{
 			
 		});
 		leaveButton.setSize(100, 50);
-		leaveButton.setLocation(500, 500);
+		leaveButton.setLocation(1090, 715);
+		leaveButton.setBackground(Color.yellow);
 		inventoryPanel.add(leaveButton);
 		leaveButton.setVisible(true);
 		
