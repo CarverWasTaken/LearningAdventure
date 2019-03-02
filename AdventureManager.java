@@ -38,6 +38,7 @@ public class AdventureManager {
 		Room Room1 = new Room("Sky");
 		Room1.addPlatform(new Platform(425, 610));
 		Room1.addPlatform(new Platform(475, 610));
+		Room1.addNPC(new NPC(800, "Hello"));
 		Room1.start(beginning);
 	
 		Room Room2 = new Room("Sky");
