@@ -78,6 +78,7 @@ public class Adventurer extends JLabel implements KeyListener{
 			}		
 		if((y+100)>=AdventureManager.floorHeight) {
 			jump = false;
+			y= AdventureManager.floorHeight -100;
 			gravity *= 0;
 			jumpCount = 25;
 			
