@@ -6,14 +6,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class NPC extends JPanel{
+public class NPC extends JLabel{
 	private int x = 0, y =0; 
 	private String dialogue;
 	JLabel dialoguePanel = new JLabel();
 	JTextArea dialogueArea;
 	
 	 NPC(int x1, String s){
-		x = x1;
+		 setIcon(new ImageIcon(getClass().getClassLoader().getResource("NPC1.gif")));
+		 x = x1;
 		y = AdventureManager.floorHeight-100;
 		dialogue = s;
 		setBackground(Color.blue);
@@ -26,18 +27,21 @@ public class NPC extends JPanel{
 	 public void makePanel() {
 		 dialoguePanel.setSize(300,300);
 		 dialoguePanel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("textBubble.png")));
-		 dialoguePanel.setLocation(x-130, y-300);
+		 dialoguePanel.setLocation(x-125, y-300);
 		 dialoguePanel.setBackground(Color.green);
 		 dialoguePanel.setLayout(null);
+		 dialoguePanel.setVisible(false);
 		 AdventureManager.mainPanel.add(dialoguePanel);
-		 dialoguePanel.setVisible(true);
 		 
 		 dialogueArea = new JTextArea();
 		 dialogueArea.setEditable(false);
 		 dialogueArea.setLocation(8,5);
 		 dialogueArea.setOpaque(false);
-		 dialogueArea.setSize(290,200);
+		 dialogueArea.setSize(285,200);
 		 dialogueArea.setLayout(null);
+		 dialogueArea.setFont(AdventureManager.GUIFont);
+		 dialogueArea.setLineWrap(true);
+		 dialogueArea.setWrapStyleWord(true);
 		 dialogueArea.setForeground(Color.black);
 		 dialogueArea.setBackground(Color.red);
 		 dialogueArea.setText(dialogue);

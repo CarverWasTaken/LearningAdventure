@@ -52,6 +52,7 @@ public class Room {
 		}
 		for(int i =0; i<NPCs.size(); i++) {
 			AdventureManager.mainPanel.add(NPCs.get(i));
+			NPCs.get(i).dialoguePanel.setVisible(false);
 		}
 		AdventureManager.mainPanel.repaint();
 		

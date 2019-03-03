@@ -39,6 +39,7 @@ public class AdventureManager {
 		Room1.addPlatform(new Platform(425, 610));
 		Room1.addPlatform(new Platform(475, 610));
 		Room1.addNPC(new NPC(800, "Hello, weary traveler!"));
+		Room1.addNPC(new NPC(150, "Use A and D to move and W to Jump!"));
 		Room1.start(beginning);
 	
 		Room Room2 = new Room("Sky");
@@ -46,6 +47,7 @@ public class AdventureManager {
 		Room2.addPlatform(new Platform(525, 610));
 		Room2.addPlatform(new Platform(575, 610));
 		Room2.addPlatform(new Platform(625, 610));
+		Room2.addNPC(new NPC(150, "Be careful around those Robots, they are dangerous!"));
 		Room2.addEnemies(new Robot(AdventureManager.floorHeight, 500, mainPanel));
 		
 		Room Room3 = new Room("Sky");
@@ -55,9 +57,10 @@ public class AdventureManager {
 		Room3.addPlatform(new Platform(625, 610));
 		
 		Room Room4 = new Room("Sky");
-//		for(int i = 0; i<1200; i+=50) {
-//		Room4.addPlatform(new Platform(i, 540));	
-//		}
+		for(int i = 0; i<1200; i+=50) {
+		Room4.addPlatform(new Platform(i, 540));	
+		}
+		Room4.addNPC(new NPC(200, "AHHH! Run from the monsters!"));
 		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 500, mainPanel));
 		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 600, mainPanel));
 		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 800, mainPanel));
