@@ -17,6 +17,7 @@ public class Room {
 	 ArrayList<Platform> blocks = new ArrayList<Platform>();
 	 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	 ArrayList<NPC> NPCs = new ArrayList<NPC>();
+	 ArrayList<Treasure> chests = new ArrayList<Treasure>();
 	static boolean clear; 
 	ImageIcon background;
 	public static Music musicPlayer;
@@ -46,6 +47,9 @@ public class Room {
 			enemies.get(i).alive = true;
 			AdventureManager.mainPanel.add(enemies.get(i));
 		}
+		for(int i =0; i<chests.size(); i++) {
+			AdventureManager.mainPanel.add(chests.get(i));
+		}
 		
 		for(int i =0; i<blocks.size(); i++) {
 			AdventureManager.mainPanel.add(blocks.get(i));
@@ -63,6 +67,9 @@ public class Room {
 				AdventureManager.toon.Update();
 				for(int i = 0; i<blocks.size(); i++) {
 					blocks.get(i).update();
+				}
+				for(int i = 0; i<chests.size(); i++) {
+					chests.get(i).update();
 				}
 				for(int i =0; i<NPCs.size(); i++) {
 					NPCs.get(i).update();
@@ -104,6 +111,9 @@ public class Room {
 		for(int i =0; i<blocks.size(); i++) {
 			AdventureManager.mainPanel.remove(blocks.get(i));
 		}
+		for(int i =0; i<chests.size(); i++) {
+			AdventureManager.mainPanel.remove(chests.get(i));
+		}
 		for(int i =0; i<enemies.size(); i++) {
 			AdventureManager.mainPanel.remove(enemies.get(i));
 		}
@@ -138,6 +148,12 @@ public class Room {
 	public void addNPC(NPC q) {
 		NPCs.add(q);
 		q.setVisible(true);
+		Main.window.repaint();
+		
+	}
+	public void addChest(Treasure t) {
+		chests.add(t);
+		t.setVisible(true);
 		Main.window.repaint();
 		
 	}

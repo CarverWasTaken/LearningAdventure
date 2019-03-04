@@ -75,7 +75,14 @@ public class Adventurer extends JLabel implements KeyListener{
 		}
 		if(iskeyDown(KeyEvent.VK_A)){
 			 x -= speed; setLocation(x,y); setIcon(leftImage);
-			}		
+			}	
+		if(iskeyDown(KeyEvent.VK_ENTER)){
+			 if(AdventureManager.currentTreasure != null) {
+				 AdventureManager.gold += AdventureManager.currentTreasure.gold;
+				 AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
+				 AdventureManager.currentTreasure.openChest();
+			 }
+			}	
 		if((y+100)>=AdventureManager.floorHeight) {
 			jump = false;
 			y= AdventureManager.floorHeight -100;

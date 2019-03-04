@@ -31,6 +31,7 @@ public class AdventureManager {
 	public static JLabel mainPanel, healthInfo;
 	static Font GUIFont = new Font("Comic Sans MS", Font.PLAIN, 18);
 	static Font TextFont = new Font("Comic Sans MS", Font.PLAIN, 25);
+	static Treasure currentTreasure;
 	String factoryMusic = ".//res//Laserpack.wav";
 	String DRUM = ".//res//DRUM.wav";
 	
@@ -38,8 +39,10 @@ public class AdventureManager {
 		Room Room1 = new Room("Sky");
 		Room1.addPlatform(new Platform(425, 610));
 		Room1.addPlatform(new Platform(475, 610));
-		Room1.addNPC(new NPC(800, "Hello, weary traveler!"));
-		Room1.addNPC(new NPC(150, "Use A and D to move and W to Jump!"));
+		Room1.addNPC(new NPC(800, "You can jump on blocks!"));
+		Room1.addNPC(new NPC(250, "Use A and D to move and W to Jump!"));
+		Room1.addChest(new Treasure(475, 560, 500));
+		Room1.addChest(new Treasure(800, 650, 200));
 		Room1.start(beginning);
 	
 		Room Room2 = new Room("Sky");
