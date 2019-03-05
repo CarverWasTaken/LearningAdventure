@@ -1,10 +1,13 @@
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Treasure extends JPanel{
+public class Treasure extends JLabel{
 	private boolean open;
 	 int gold , x , y;
 	int count;
 	Treasure(int x1, int y1, int g){
+		setIcon(new ImageIcon(getClass().getClassLoader().getResource("Chest.png")));
 		x = x1;
 		y = y1;
 		setSize(50,50);

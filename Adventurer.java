@@ -81,6 +81,8 @@ public class Adventurer extends JLabel implements KeyListener{
 				 AdventureManager.gold += AdventureManager.currentTreasure.gold;
 				 AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
 				 AdventureManager.currentTreasure.openChest();
+				 AdventureManager.currentTreasure.setIcon(new ImageIcon(getClass().getClassLoader().getResource("ChestOpen.png")));
+				 Main.window.repaint();
 			 }
 			}	
 		if((y+100)>=AdventureManager.floorHeight) {

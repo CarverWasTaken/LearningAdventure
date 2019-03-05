@@ -39,15 +39,16 @@ public class AdventureManager {
 		Room Room1 = new Room("Sky");
 		Room1.addPlatform(new Platform(425, 610));
 		Room1.addPlatform(new Platform(475, 610));
-		Room1.addNPC(new NPC(800, "You can jump on blocks!"));
+		Room1.addNPC(new NPC(800, "Press ENTER to open chests!"));
 		Room1.addNPC(new NPC(250, "Use A and D to move and W to Jump!"));
 		Room1.addChest(new Treasure(475, 560, 500));
-		Room1.addChest(new Treasure(800, 650, 200));
+		Room1.addChest(new Treasure(850, 650, 200));
 		Room1.start(beginning);
 	
 		Room Room2 = new Room("Sky");
 		Room2.addPlatform(new Platform(475, 610));
 		Room2.addPlatform(new Platform(525, 610));
+		Room2.addChest(new Treasure(850, 650, 200));
 		Room2.addPlatform(new Platform(575, 610));
 		Room2.addPlatform(new Platform(625, 610));
 		Room2.addNPC(new NPC(150, "Be careful around those Robots, they are dangerous!"));
