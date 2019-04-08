@@ -11,9 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Room {
+public class Room extends Thread{
 	static int floorHeight =700;
 	static int gold = 5;
+	boolean running = false;
 	 ArrayList<Platform> blocks = new ArrayList<Platform>();
 	 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	 ArrayList<NPC> NPCs = new ArrayList<NPC>();
@@ -37,14 +38,21 @@ public class Room {
 		rightRoom = null;
 		background = new ImageIcon(getClass().getClassLoader().getResource(bg + ".png"));
 	}
+	public void run() {
+		running = true;
+		make();
+	}
 	
-	public void start(int start){
+	
+	public void make(){
+		//System.out.println(Thread.currentThread().getId());
 		AdventureManager.currentRoom = this;
-		AdventureManager.toon.x = start;
+		AdventureManager.toon.x = AdventureManager.start;
 		AdventureManager.mainPanel.setIcon(background);
 		
 		for(int i =0; i<enemies.size(); i++) {
 			enemies.get(i).alive = true;
+			enemies.get(i).setVisible(true);
 			AdventureManager.mainPanel.add(enemies.get(i));
 		}
 		for(int i =0; i<chests.size(); i++) {
@@ -84,8 +92,9 @@ public class Room {
 					}
 					else {
 						deleteMain();
-						
-						leftRoom.start(end);
+						AdventureManager.start = end;
+						if(leftRoom.running == true) {leftRoom.make();}
+						else {leftRoom.start();}
 					}
 				}
 				if(AdventureManager.toon.x +50 > 1194) {
@@ -95,8 +104,10 @@ public class Room {
 					else {
 						
 						deleteMain();
+						AdventureManager.start = beginning;
 						
-						rightRoom.start(beginning);
+						if(rightRoom.running == true) {rightRoom.make();}
+						else {rightRoom.start();}
 					}
 				}
 			}
@@ -108,6 +119,7 @@ public class Room {
 		Main.window.repaint();
 	}
 	public void deleteMain() {
+		
 		for(int i =0; i<blocks.size(); i++) {
 			AdventureManager.mainPanel.remove(blocks.get(i));
 		}
@@ -120,10 +132,10 @@ public class Room {
 		for(int i =0; i<NPCs.size(); i++) {
 			AdventureManager.mainPanel.remove(NPCs.get(i));
 		}
-		t.stop();
+		AdventureManager.currentRoom.t.stop();
 		//System.out.println("Main Deleted");
-		t.stop();
 		Main.window.repaint();
+		
 		
 	}
 	public void addPlatform(Platform p) {

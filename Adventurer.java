@@ -17,6 +17,7 @@ public class Adventurer extends JLabel implements KeyListener{
 	int gravity = 3;
 	public boolean plat = false, jump;
 	static Inventory inven = new Inventory();
+	
 	public static boolean[] keyss = new boolean[256];
 	static public int health = 20, maxHealth = 20;
 	int jumpCounter;
@@ -28,8 +29,6 @@ public class Adventurer extends JLabel implements KeyListener{
 		leftImage = new ImageIcon(getClass().getClassLoader().getResource("SnowmanLeft.png"));
 		rightImage = new ImageIcon(getClass().getClassLoader().getResource("SnowmanRight.png"));
 		
-		
-		
 		setIcon(rightImage);
 		
 		
@@ -40,7 +39,6 @@ public class Adventurer extends JLabel implements KeyListener{
 		setBackground(Color.red);
 		
 	}
-	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keyss[e.getKeyCode()] = true;
@@ -64,8 +62,10 @@ public class Adventurer extends JLabel implements KeyListener{
 		return keyss[key];
 	}
 	public void Update() {
+		
+		
 		if((iskeyDown(KeyEvent.VK_I)) && AdventureManager.currentRoom.t.isRunning()){
-			inven.start();
+			inven.open();
 		}
 		if(iskeyDown(KeyEvent.VK_W)){
 			jump();
@@ -78,12 +78,16 @@ public class Adventurer extends JLabel implements KeyListener{
 			}	
 		if(iskeyDown(KeyEvent.VK_ENTER)){
 			 if(AdventureManager.currentTreasure != null) {
-				 AdventureManager.gold += AdventureManager.currentTreasure.gold;
-				 AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
-				 AdventureManager.currentTreasure.openChest();
-				 AdventureManager.currentTreasure.setIcon(new ImageIcon(getClass().getClassLoader().getResource("ChestOpen.png")));
-				 Main.window.repaint();
+				//AdventureManager.currentRoom.t.stop();
+			 AdventureManager.currentTreasure.unlock();
+				Main.window.setVisible(true);
 			 }
+			 if(AdventureManager.currentNPC != null) {
+					System.out.println("yes");
+				
+					
+				 } 
+			 
 			}	
 		if((y+100)>=AdventureManager.floorHeight) {
 			jump = false;

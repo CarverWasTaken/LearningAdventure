@@ -15,9 +15,8 @@ public class Robot extends Enemy {
 	 Timer time;
 	int check =0;
 	ImageIcon leftImage, rightImage;
-	Robot(int floor, int position, JLabel panel){
+	Robot(int floor, int position){
 		alive = true;
-		mainPanel = panel;
 		leftImage = new ImageIcon(getClass().getClassLoader().getResource("RobotLeft.png"));
 		rightImage = new ImageIcon(getClass().getClassLoader().getResource("RobotRight.png"));
 		setIcon(rightImage);
@@ -38,9 +37,11 @@ public class Robot extends Enemy {
 			|| ((AdventureManager.toon.x > x) && (AdventureManager.toon.x < x+50)  && (alive==true) &&(AdventureManager.toon.y+98> y) &&(AdventureManager.toon.y+98< y+100) )
 				
 				) {
-			AdventureManager.mainPanel.remove(this);
 			setVisible(false);
-			Combat.startCombat(0, time);
+			AdventureManager.currentEnemy = this;
+			AdventureManager.combat.enterMenu();
+			AdventureManager.mainPanel.remove(this);
+			
 			alive=false;
 		}
 		Random rand = new Random();
@@ -60,7 +61,5 @@ public class Robot extends Enemy {
 		}
 		x += speed; setLocation(x,y); repaint();
 	}
-	public void setTimer(Timer t) {
-		t = time;
-	}
+	
 }

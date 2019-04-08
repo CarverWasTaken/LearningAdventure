@@ -18,13 +18,17 @@ import javax.swing.Timer;
  
  */
 public class AdventureManager {
+	
 	int first =0, first1=0, beginning = 0, end = 1145;
 	static int floorHeight =700;
 	static int gold = 5;
 	static Room currentRoom;
+	static int start = 0;
 	ArrayList<Platform> blocks = new ArrayList<Platform>();
 	ImageIcon background;
 	public static Music musicPlayer;
+	public static Combat combat = new Combat();
+	public static Enemy currentEnemy;
 	public static Adventurer toon;
 	public static Timer t;
 	public static JPanel floor, dataPanel;
@@ -32,18 +36,18 @@ public class AdventureManager {
 	static Font GUIFont = new Font("Comic Sans MS", Font.PLAIN, 18);
 	static Font TextFont = new Font("Comic Sans MS", Font.PLAIN, 25);
 	static Treasure currentTreasure;
+	static NPC currentNPC = null;
 	String factoryMusic = ".//res//Laserpack.wav";
 	String DRUM = ".//res//DRUM.wav";
 	
 	public void createWorld() {
+		
 		Room Room1 = new Room("Sky");
-		Room1.addPlatform(new Platform(425, 610));
-		Room1.addPlatform(new Platform(475, 610));
-		Room1.addNPC(new NPC(800, "Press ENTER to open chests!"));
-		Room1.addNPC(new NPC(250, "Use A and D to move and W to Jump!"));
-		Room1.addChest(new Treasure(475, 560, 500));
-		Room1.addChest(new Treasure(850, 650, 200));
-		Room1.start(beginning);
+		Room1.addNPC(new NPC(150, "You can use A and D to move, and W to jump! You can jump over those platforms over there!"));
+		Room1.addPlatform(new Platform(500, 650));
+		Room1.addPlatform(new Platform(550, 600));
+		Room1.addPlatform(new Platform(600, 550));
+		Room1.start();
 	
 		Room Room2 = new Room("Sky");
 		Room2.addPlatform(new Platform(475, 610));
@@ -52,7 +56,7 @@ public class AdventureManager {
 		Room2.addPlatform(new Platform(575, 610));
 		Room2.addPlatform(new Platform(625, 610));
 		Room2.addNPC(new NPC(150, "Be careful around those Robots, they are dangerous!"));
-		Room2.addEnemies(new Robot(AdventureManager.floorHeight, 500, mainPanel));
+		Room2.addEnemies(new Robot(AdventureManager.floorHeight, 500));
 		
 		Room Room3 = new Room("Sky");
 		Room3.addPlatform(new Platform(475, 610));
@@ -62,12 +66,12 @@ public class AdventureManager {
 		
 		Room Room4 = new Room("Sky");
 		for(int i = 0; i<1200; i+=50) {
-		Room4.addPlatform(new Platform(i, 540));	
+		Room4.addPlatform(new Platform(i, 400));	
 		}
 		Room4.addNPC(new NPC(200, "AHHH! Run from the monsters!"));
-		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 500, mainPanel));
-		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 600, mainPanel));
-		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 800, mainPanel));
+		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 500));
+		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 600));
+		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 800));
 		
 		Room1.addRightRoom(Room2);
 		Room2.addRightRoom(Room3); Room2.addLeftRoom(Room1);
@@ -75,6 +79,10 @@ public class AdventureManager {
 		Room4.addLeftRoom(Room3);
 
 	}
+	
+	
+	
+	
 	
 	
 	public void createSpace() {
@@ -116,6 +124,11 @@ public class AdventureManager {
 		floor.setVisible(true);
 		
 		createWorld();
+	}
+	static void heal(int h) {
+		Adventurer.health += h;
+		if(Adventurer.health > Adventurer.maxHealth) Adventurer.health = Adventurer.maxHealth;
+		healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + gold );
 	}
 	
 }

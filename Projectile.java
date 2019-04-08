@@ -88,6 +88,7 @@ public class Projectile extends JPanel {
 		
 	}
 	public void destroy(){
+		Combat.count++;
 		alive = false;
 		this.setVisible(false);
 		Main.window.remove(this);

@@ -15,7 +15,7 @@ import javax.swing.Timer;
 public class Combat {
 	public static JPanel combatPanel, menuPanel, damagePanel, healthPanel;
 	public static String enemyName;
-	public static Boolean inCombat = true;
+	public static Boolean inCombat = false;
 	public static JTextArea healthDisplay;
 	public static Projectile projectile1;
 	public static Music battleMusic;
@@ -26,27 +26,16 @@ public class Combat {
 	ImageIcon Image, playerImage;
 	public static int target = 350, currentLocation = 350, ammo = 1, count =0, maxAmmo =1, playerField, enemyDamage, enemyLevel;
 	public static Timer changeTarget, move;
-	public static void startCombat(int enemy, Timer t) {
-		time = t;
-		//t.stop();
-		AdventureManager.mainPanel.setVisible(false);
-		//AdventureManager.musicPlayer.stop();
+	
+	Combat(){
 		
-//		battleMusic = new Music();
-//		battleMusic.setFile(".//res//Metalmania.wav");
-//		battleMusic.play();
-//		
-		
-		new Combat(enemy);
-	}
-	Combat(int enemy){
-		AdventureManager.currentRoom.t.stop();
 		enemyName = "Robot";
 		menuPanel = new JPanel();
 		menuPanel.setSize(1194, 771);
 		menuPanel.setLocation(0,0);
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(Color.green);
+		menuPanel.setVisible(false);
 		Main.window.add(menuPanel);
 		
 		
@@ -86,12 +75,9 @@ public class Combat {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				menuPanel.setVisible(false);
-				Main.window.remove(menuPanel);
 				Main.window.setVisible(true);
 				
-				switch(enemy) {
-				case 0: robotCombat(); break;
-				}
+				startCombat();
 				
 			}
 			
@@ -102,7 +88,19 @@ public class Combat {
 		itemButton.setText("Use an item!");
 		itemButton.setFont(menuFont);
 		itemButton.setBackground(Color.CYAN);
+		itemButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Adventurer.inven.open();
+				
+			}
+			
+			
+		});
 		buttonPanel.add(itemButton);
+		
+		
 		
 		JButton runButton = new JButton();
 		runButton.setText("Run!");
@@ -118,13 +116,10 @@ public class Combat {
 				switch(runChance) {
 				case 0: 
 				menuPanel.setVisible(false);
-				Main.window.remove(menuPanel);
+				//Main.window.remove(menuPanel);
 				Main.window.setVisible(true); Run(); break;
 				case 1: 
-					menuPanel.setVisible(false);
-					Main.window.remove(menuPanel);
-					Main.window.setVisible(true);
-					robotCombat(); break;
+					startCombat(); break;
 				}
 				
 			}
@@ -135,16 +130,11 @@ public class Combat {
 		
 		
 		
+		
+		
+		
 		buttonPanel.setLayout(new GridLayout(3,1));
 		
-		
-		Main.window.setVisible(true);
-		
-
-	}
-	
-	public void robotCombat() {
-		inCombat = true;
 		enemyLevel = 5;
 		enemyDamage = 2;
 		
@@ -153,7 +143,7 @@ public class Combat {
 		combatPanel.setLocation(0,0);
 		combatPanel.setLayout(null);
 		combatPanel.setBackground(Color.magenta);
-		
+		combatPanel.setVisible(false);
 		Main.window.add(combatPanel);
 		
 		Image = new ImageIcon();
@@ -186,6 +176,7 @@ public class Combat {
 		healthPanel.setBackground(Color.GREEN);
 		
 		healthDisplay = new JTextArea();
+		healthDisplay.setEditable(false);
 		healthDisplay.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth);
 		healthDisplay.setLocation(0,0);
 		healthDisplay.setSize(100, 25);
@@ -207,7 +198,7 @@ public class Combat {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(count == 10) { endCombat(); count = 0; target = 350;} 
-				count++;
+				;
 				
 			Random rand = new Random(); 
 			int chance = rand.nextInt(3);
@@ -220,7 +211,7 @@ public class Combat {
 				
 			}
 			
-		}); changeTarget.start();
+		}); 
 		
 		move = new Timer(3, new ActionListener() {
 
@@ -250,11 +241,50 @@ public class Combat {
 				
 			}
 			
-		}); move.start();
+		}); 
+		
+		
+		Main.window.setVisible(true);
+		
+
+	}
+	
+public void startCombat() {
+	count = 0;	
+	AdventureManager.mainPanel.setVisible(true);
+	menuPanel.setVisible(false);
+		combatPanel.setVisible(true);
+		move.start();
+		changeTarget.start();
+		//AdventureManager.musicPlayer.stop();
+		
+//		battleMusic = new Music();
+//		battleMusic.setFile(".//res//Metalmania.wav");
+//		battleMusic.play();
+//		
 		
 		
 	}
+
+	public void enterMenu(){
+		enemyPanel.setLocation(1100, 350);
+		inCombat = true;
+		AdventureManager.currentRoom.t.stop();
+		AdventureManager.mainPanel.setVisible(false);
+		menuPanel.setVisible(true);
+		
+	}
+	
+	public void robotCombat() {
+		
+		
+	}
+	
 	public  void playerAttack() {
+		move.stop();
+		changeTarget.stop();
+		enemyPanel.setLocation(1100, 350);
+		
 		
 	}
 	public static void endCombat() {
@@ -271,7 +301,7 @@ public class Combat {
 		
 		combatPanel.setVisible(false);
 		Main.window.requestFocus();
-		Main.window.remove(combatPanel);
+		//Main.window.remove(combatPanel);
 		Random rand = new Random();
 		int enemyReward = enemyLevel + rand.nextInt(enemyLevel) +1;
 		

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -11,6 +12,7 @@ public class NPC extends JLabel{
 	private String dialogue;
 	JLabel dialoguePanel = new JLabel();
 	JTextArea dialogueArea;
+	ArrayList<Item> shop = new ArrayList<Item>();
 	
 	 NPC(int x1, String s){
 		 setIcon(new ImageIcon(getClass().getClassLoader().getResource("NPC1.gif")));
@@ -47,6 +49,12 @@ public class NPC extends JLabel{
 		 dialogueArea.setText(dialogue);
 		 dialoguePanel.add(dialogueArea);
 		 dialogueArea.setVisible(true);
+		 
+		 if(!shop.isEmpty()) makeShop();
+		 
+	 }
+	 public void makeShop() {
+		 
 	 }
 	public void showDialogue(){
 		 
@@ -54,6 +62,7 @@ public class NPC extends JLabel{
 		 Main.window.requestFocus();
 		AdventureManager.mainPanel.repaint();
 	 }
+	
 	public void hideDialogue(){
 		 dialoguePanel.setVisible(false);
 	}
@@ -63,9 +72,15 @@ public class NPC extends JLabel{
 					
 					) {
 				showDialogue(); 
+				if(!shop.isEmpty()) AdventureManager.currentNPC = this;
 			}
 		else {
 			hideDialogue();
+			if(AdventureManager.currentNPC == this) AdventureManager.currentNPC = null;
 		}
+		
+		
+		
 	}
+	
 }
