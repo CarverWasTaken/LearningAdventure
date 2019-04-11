@@ -33,16 +33,18 @@ public class AdventureManager {
 	public static Timer t;
 	public static JPanel floor, dataPanel;
 	public static JLabel mainPanel, healthInfo;
+	public static Shop shop = new Shop();
 	static Font GUIFont = new Font("Comic Sans MS", Font.PLAIN, 18);
 	static Font TextFont = new Font("Comic Sans MS", Font.PLAIN, 25);
 	static Treasure currentTreasure;
 	static NPC currentNPC = null;
+	static Room spawnRoom;
 	String factoryMusic = ".//res//Laserpack.wav";
 	String DRUM = ".//res//DRUM.wav";
 	
 	public void createWorld() {
 		
-		Room Room1 = new Room("Sky");
+		Room Room1 = new Room("Cave"); Room1.setRespawn();
 		Room1.addNPC(new NPC(150, "You can use A and D to move, and W to jump! You can jump over those platforms over there!"));
 		Room1.addPlatform(new Platform(500, 650));
 		Room1.addPlatform(new Platform(550, 600));
@@ -55,8 +57,23 @@ public class AdventureManager {
 		Room2.addChest(new Treasure(850, 650, 200));
 		Room2.addPlatform(new Platform(575, 610));
 		Room2.addPlatform(new Platform(625, 610));
-		Room2.addNPC(new NPC(150, "Be careful around those Robots, they are dangerous!"));
-		Room2.addEnemies(new Robot(AdventureManager.floorHeight, 500));
+		
+		NPC warningGuy = new NPC(150, "Be careful around those Robots, they are dangerous!");
+		warningGuy.addItem(new Item(
+				"Tasty Squash",
+				"Item",
+				"This is a yummy looking squash! If you eat it, the tasty fruit could probably heal you!",
+				10
+				), 50);
+		
+		warningGuy.addItem(new Item(
+				"Tasty Apple",
+				"Item",
+				"This is a yummy looking apple! If you eat it, the tasty fruit could probably heal you!",
+				5
+				), 10);
+		Room2.addNPC(warningGuy);
+		Room2.addEnemies(new Enemy(AdventureManager.floorHeight, 500, "Robot", 25));
 		
 		Room Room3 = new Room("Sky");
 		Room3.addPlatform(new Platform(475, 610));
@@ -69,14 +86,14 @@ public class AdventureManager {
 		Room4.addPlatform(new Platform(i, 400));	
 		}
 		Room4.addNPC(new NPC(200, "AHHH! Run from the monsters!"));
-		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 500));
-		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 600));
-		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 800));
+//		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 500));
+//		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 600));
+//		Room4.addEnemies(new Robot(AdventureManager.floorHeight, 800));
 		
 		Room1.addRightRoom(Room2);
 		Room2.addRightRoom(Room3); Room2.addLeftRoom(Room1);
 		Room3.addLeftRoom(Room2); Room3.addRightRoom(Room4);
-		Room4.addLeftRoom(Room3);
+		Room4.addLeftRoom(Room3); 
 
 	}
 	
@@ -132,3 +149,4 @@ public class AdventureManager {
 	}
 	
 }
+

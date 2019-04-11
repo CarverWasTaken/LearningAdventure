@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -13,7 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 public class Combat {
-	public static JPanel combatPanel, menuPanel, damagePanel, healthPanel;
+	public static JPanel combatPanel, menuPanel, damagePanel, healthPanel, lossPanel;
 	public static String enemyName;
 	public static Boolean inCombat = false;
 	public static JTextArea healthDisplay;
@@ -23,11 +24,66 @@ public class Combat {
 	Font menuFont = new Font("Comic Sans MS", Font.PLAIN, 30);
 	Font GUIFont = new Font("Comic Sans MS", Font.PLAIN, 15);
 	public static JLabel enemyPanel, playerPanel;
+	static ArrayList<Projectile> attacks = new ArrayList<Projectile>();
 	ImageIcon Image, playerImage;
 	public static int target = 350, currentLocation = 350, ammo = 1, count =0, maxAmmo =1, playerField, enemyDamage, enemyLevel;
 	public static Timer changeTarget, move;
 	
 	Combat(){
+		
+		lossPanel = new JPanel();
+		lossPanel.setSize(1194, 771);
+		lossPanel.setLayout(null);
+		lossPanel.setLocation(0,0);
+		lossPanel.setBackground(Color.black);
+		JPanel lossTextPanel = new JPanel();
+		lossTextPanel.setSize(600,250);
+		lossTextPanel.setLocation(297, 100);
+		lossTextPanel.setBackground(Color.black);
+		lossTextPanel.setLayout(new GridLayout(1,1));
+		lossPanel.add(lossTextPanel);
+		
+		
+		JTextArea lossArea = new JTextArea();
+		lossArea.setBackground(Color.black);
+		lossArea.setForeground(Color.WHITE);
+		lossArea.setFont(menuFont);
+		lossArea.setLineWrap(true);
+		lossArea.setWrapStyleWord(true);
+		lossArea.setEditable(false);
+		lossArea.setText("Looks like you lost! Don't worry, if you try hard you can win next time!");
+		lossTextPanel.add(lossArea);
+		
+		JPanel  darnPanel = new JPanel();
+		darnPanel.setSize(150,50);
+		darnPanel.setLocation(500, 500);
+		darnPanel.setBackground(Color.red);
+		darnPanel.setLayout(new GridLayout(1,1));
+		lossPanel.add(darnPanel);
+		
+		JButton darnButton = new JButton();
+		darnButton.setFont(GUIFont);
+		darnButton.setFocusPainted(false);
+		darnButton.setText("Oh Darn!");
+		darnButton.setBackground(Color.WHITE);
+		darnButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				lossPanel.setVisible(false);
+				Adventurer.health = Adventurer.maxHealth;
+				AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
+				AdventureManager.mainPanel.setVisible(true);
+				Main.window.requestFocus();
+			}
+			
+			
+			
+		});
+		darnPanel.add(darnButton);
+		
+		lossPanel.setVisible(false);
+		Main.window.add(lossPanel);
 		
 		enemyName = "Robot";
 		menuPanel = new JPanel();
@@ -147,7 +203,7 @@ public class Combat {
 		Main.window.add(combatPanel);
 		
 		Image = new ImageIcon();
-		Image = new ImageIcon(getClass().getClassLoader().getResource("RobotLeft.png"));
+		
 		
 		playerImage = new ImageIcon();
 		playerImage = new ImageIcon(getClass().getClassLoader().getResource("SnowmanRight.png"));
@@ -156,7 +212,7 @@ public class Combat {
 		enemyPanel.setSize(50, 100);
 		enemyPanel.setLocation(1100, currentLocation);
 		enemyPanel.setBackground(Color.GREEN);
-		enemyPanel.setIcon(Image);
+		
 		
 		combatPanel.add(enemyPanel);
 		
@@ -193,11 +249,11 @@ public class Combat {
 		combatPanel.add(damagePanel);
 		
 		Main.window.setVisible(true);
-		changeTarget = new Timer(1000, new ActionListener() {
+		changeTarget = new Timer(1500, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(count == 10) { endCombat(); count = 0; target = 350;} 
+				if(count ==(int)((double)AdventureManager.currentEnemy.level*0.25)+5) { endCombat(); count = 0; target = 350;} 
 				;
 				
 			Random rand = new Random(); 
@@ -231,7 +287,8 @@ public class Combat {
 				if(currentLocation == target) {
 					if(ammo > 0) {
 						
-						projectile1 = new Projectile(currentLocation); 
+						projectile1 = new Projectile(currentLocation);
+						attacks.add(projectile1);
 						combatPanel.add(projectile1);
 						ammo--;
 						Main.window.setVisible(true);
@@ -250,6 +307,9 @@ public class Combat {
 	}
 	
 public void startCombat() {
+	healthDisplay.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth);
+	Image = AdventureManager.currentEnemy.leftImage;
+	enemyPanel.setIcon(Image);
 	count = 0;	
 	AdventureManager.mainPanel.setVisible(true);
 	menuPanel.setVisible(false);
@@ -288,13 +348,20 @@ public void startCombat() {
 		
 	}
 	public static void endCombat() {
+		for(int i =0; i<attacks.size(); i++) {
+			attacks.get(i).t.stop();
+			combatPanel.remove(attacks.get(i));
+			attacks.get(i).setVisible(false);
+			attacks.remove(i);
+		}
+		
 		AdventureManager.currentRoom.t.start();
 		//battleMusic.stop();
 		//AdventureManager.musicPlayer.play();
 		inCombat = false;
-		Projectile.t.stop();
 		move.stop();
 		changeTarget.stop();
+		count = 0;
 		
 		//AdventureManager.t.start();
 		AdventureManager.mainPanel.setVisible(true);
@@ -303,12 +370,13 @@ public void startCombat() {
 		Main.window.requestFocus();
 		//Main.window.remove(combatPanel);
 		Random rand = new Random();
-		int enemyReward = enemyLevel + rand.nextInt(enemyLevel) +1;
+		int enemyReward = AdventureManager.currentEnemy.level + rand.nextInt(enemyLevel) +10;
 		
 		
 //		AdventureManager.dialogueBox("You defeated the " + enemyName + "!\nYou got " + enemyReward + " gold!" );
 		AdventureManager.gold += enemyReward;
 		AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
+		AdventureManager.dataPanel.setVisible(true);
 	}
 	public static void Run() {
 		//battleMusic.stop();
@@ -320,5 +388,18 @@ public void startCombat() {
 		
 		
 		Main.window.requestFocus();
+	}
+	public void lost() {
+		AdventureManager.gold = (int)((double)AdventureManager.gold * 0.6);
+		AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
+		endCombat();
+		AdventureManager.dataPanel.setVisible(true);
+		AdventureManager.currentRoom.t.stop();
+		AdventureManager.currentRoom.deleteMain();
+		AdventureManager.spawnRoom.make();
+		AdventureManager.mainPanel.setVisible(false);
+		AdventureManager.mainPanel.add(AdventureManager.dataPanel);
+		lossPanel.setVisible(true);
+		
 	}
 }

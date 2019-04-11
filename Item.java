@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Item {
  String name, type, description; 
- int value;
+ int value, price;
  Random rand = new Random();
  int id;
  

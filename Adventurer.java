@@ -83,7 +83,7 @@ public class Adventurer extends JLabel implements KeyListener{
 				Main.window.setVisible(true);
 			 }
 			 if(AdventureManager.currentNPC != null) {
-					System.out.println("yes");
+					AdventureManager.shop.openShop();
 				
 					
 				 } 

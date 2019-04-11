@@ -23,6 +23,7 @@ public class Room extends Thread{
 	ImageIcon background;
 	public static Music musicPlayer;
 	Timer t;
+	boolean spawn = false;
 	int first =0, first1=0, beginning = 10, end = 1135;
 	public static JPanel floor, dataPanel;
 	public JLabel mainPanel = new JLabel();
@@ -46,6 +47,10 @@ public class Room extends Thread{
 	
 	public void make(){
 		//System.out.println(Thread.currentThread().getId());
+		if(spawn == true) {
+			AdventureManager.spawnRoom = this;
+		}
+		
 		AdventureManager.currentRoom = this;
 		AdventureManager.toon.x = AdventureManager.start;
 		AdventureManager.mainPanel.setIcon(background);
@@ -88,7 +93,7 @@ public class Room extends Thread{
 				
 				if(AdventureManager.toon.x < 0) {
 					if(leftRoom == null) {
-						AdventureManager.toon.x = 0; Main.window.repaint();
+						AdventureManager.toon.x = 0; //Main.window.repaint();
 					}
 					else {
 						deleteMain();
@@ -99,7 +104,7 @@ public class Room extends Thread{
 				}
 				if(AdventureManager.toon.x +50 > 1194) {
 					if(rightRoom == null) {
-						AdventureManager.toon.x = 1145; Main.window.repaint();
+						AdventureManager.toon.x = 1145; //Main.window.repaint();
 					}
 					else {
 						
@@ -116,7 +121,7 @@ public class Room extends Thread{
 //		musicPlayer.setFile(DRUM);
 //		musicPlayer.play(); first++;
 		Main.window.setVisible(true);
-		Main.window.repaint();
+		//Main.window.repaint();
 	}
 	public void deleteMain() {
 		
@@ -168,5 +173,8 @@ public class Room extends Thread{
 		t.setVisible(true);
 		Main.window.repaint();
 		
+	}
+	public void setRespawn() {
+		spawn = true;
 	}
 }

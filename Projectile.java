@@ -11,11 +11,11 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class Projectile extends JPanel {
-	int speed =1, current = 1020;
+	int speed = (int)((double)AdventureManager.currentEnemy.level*0.25)+2, current = 1020;
 	Music laserSound;
 	JTextField answer;
 	boolean alive = true;
-	public static Timer t;
+	public Timer t;
 	Font questionFont = new Font("Comic Sans MS", Font.PLAIN, 18);
 	Projectile(int location){
 		Random Rand = new Random();
@@ -26,7 +26,7 @@ public class Projectile extends JPanel {
 		setLayout(new GridLayout(2,1));
 		
 		
-		t = new Timer(5, new ActionListener() {
+		t = new Timer(25, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				current -= speed;
@@ -38,9 +38,12 @@ public class Projectile extends JPanel {
 					repaint();
 				}
 				if((current<130) && (alive == true) && (Combat.inCombat == true)) {
-					Adventurer.health -= Combat.enemyDamage;
+					Adventurer.health -= AdventureManager.currentEnemy.level/2;
+					AdventureManager.dataPanel.setVisible(false);
+					if(Adventurer.health<=0) AdventureManager.combat.lost();
 					Combat.healthDisplay.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth);
-					AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth);
+					AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
+					
 					alive = false;
 					destroy();
 					
@@ -88,6 +91,7 @@ public class Projectile extends JPanel {
 		
 	}
 	public void destroy(){
+		Combat.attacks.remove(this);
 		Combat.count++;
 		alive = false;
 		this.setVisible(false);

@@ -50,11 +50,11 @@ public class NPC extends JLabel{
 		 dialoguePanel.add(dialogueArea);
 		 dialogueArea.setVisible(true);
 		 
-		 if(!shop.isEmpty()) makeShop();
 		 
 	 }
-	 public void makeShop() {
-		 
+	 public void addItem(Item t, int p) {
+		 t.price = p;
+		 shop.add(t);
 	 }
 	public void showDialogue(){
 		 

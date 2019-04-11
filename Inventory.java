@@ -386,6 +386,7 @@ public class Inventory{
  public void open() {
 	 if(Combat.inCombat == true) Combat.menuPanel.setVisible(false);
 	 AdventureManager.currentRoom.t.stop();
+	 updateInfo();
 	inventoryPanel.setVisible(true);
 	AdventureManager.mainPanel.setVisible(false);
 	 
