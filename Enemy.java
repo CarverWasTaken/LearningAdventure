@@ -4,20 +4,39 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.Timer;
+/*
+This is a game called "Learning Adventure." It is designed for children within the ages of 9-10 years old, and uses mathematics to practice and test academic skills!
+Copyright (C) 2019 Carver Ellis Simkins
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 public class Enemy extends JLabel{
 	int x;
 	 int y;
 	 boolean alive = true;
+	 String name;
 	int speed = 1, level;
 	JLabel mainPanel;
 	 Timer time;
 	int check =0;
 	ImageIcon leftImage, rightImage;
-	Enemy(int floor, int position, String image, int l){
+	Enemy(int floor, int position, String n, int l){
+		name = n;
 		alive = true;
 		level = l;
-		leftImage = new ImageIcon(getClass().getClassLoader().getResource(image +"Left.png"));
-		rightImage = new ImageIcon(getClass().getClassLoader().getResource(image +"Right.png"));
+		leftImage = new ImageIcon(getClass().getClassLoader().getResource(n +"Left.png"));
+		rightImage = new ImageIcon(getClass().getClassLoader().getResource(n +"Right.png"));
 		setIcon(rightImage);
 		
 			y = floor - 100;

@@ -10,7 +10,23 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+/*
+This is a game called "Learning Adventure." It is designed for children within the ages of 9-10 years old, and uses mathematics to practice and test academic skills!
+Copyright (C) 2019 Carver Ellis Simkins
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 public class Room extends Thread{
 	static int floorHeight =700;
 	static int gold = 5;
@@ -21,7 +37,7 @@ public class Room extends Thread{
 	 ArrayList<Treasure> chests = new ArrayList<Treasure>();
 	static boolean clear; 
 	ImageIcon background;
-	public static Music musicPlayer;
+	public static Music musicPlayer = new Music();
 	Timer t;
 	boolean spawn = false;
 	int first =0, first1=0, beginning = 10, end = 1135;
@@ -32,7 +48,7 @@ public class Room extends Thread{
 	static Font GUIFont = new Font("Comic Sans MS", Font.PLAIN, 18);
 	static Font TextFont = new Font("Comic Sans MS", Font.PLAIN, 25);
 	String factoryMusic = ".//res//Laserpack.wav";
-	String DRUM = ".//res//DRUM.wav";
+	String DRUM = ".//res//CarverGameMusic.wav";
 	
 	Room(String bg){
 		leftRoom = null;
@@ -118,9 +134,7 @@ public class Room extends Thread{
 			}
 			
 		}); t.start();
-//		musicPlayer.setFile(DRUM);
-//		musicPlayer.play(); first++;
-		Main.window.setVisible(true);
+		
 		//Main.window.repaint();
 	}
 	public void deleteMain() {

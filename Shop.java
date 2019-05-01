@@ -274,7 +274,7 @@ public class Shop {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(AdventureManager.gold >= items.get(currentItem).price) {
+				if((AdventureManager.gold >= items.get(currentItem).price)&&(Inventory.items.size()<12)) {
 					Inventory.addItem(items.get(currentItem));
 					AdventureManager.gold -= items.get(currentItem).price;
 					AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
@@ -328,16 +328,6 @@ public class Shop {
 			if(items.size() > 11) iButton12.setText(items.get(11).name); else iButton12.setText("");  if((items.size() > 11) && ((items.get(11).equals(currentArmor)) || (items.get(11).equals(currentWeapon)))) iButton12.setBackground(Color.green); else iButton12.setBackground(Color.cyan);
 				
 				
-				equipedArmor = false;
-				equipedWeapon=false; 
-				for(int i = 0; i<items.size(); i++) {
-					if(items.get(i).equals(currentArmor)) equipedArmor=true; 
-					if(items.get(i).equals(currentWeapon)) equipedWeapon=true; 
-				}
-				if(equipedArmor == false) {
-					Adventurer.maxHealth = 20;
-					 AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
-				}
 			 
 			 if(currentItem>=items.size()) {
 				infoArea.setText("This is an empty space!");
@@ -349,7 +339,12 @@ public class Shop {
 			 }
 			 else {
 				 	
-						infoArea.setText(items.get(currentItem).name + "\n\n" + items.get(currentItem).type + "\n\n" + items.get(currentItem).description + "\n\nHeals by " + items.get(currentItem).value + " health!\n\n" + "Costs " + items.get(currentItem).price + " gold!");
+						if(items.get(currentItem).type == "Item") {
+							infoArea.setText(items.get(currentItem).name + "\n\n" + items.get(currentItem).type + "\n\n" + items.get(currentItem).description + "\n\nHeals by " + items.get(currentItem).value + " health!\n\n" + "Costs " + items.get(currentItem).price + " gold!");
+						}
+						if(items.get(currentItem).type == "Armor") {
+							infoArea.setText(items.get(currentItem).name + "\n\n" + items.get(currentItem).type + "\n\n" + items.get(currentItem).description + "\n\nIncreases maximum health by " + items.get(currentItem).value + "!\n\n" + "Costs " + items.get(currentItem).price + " gold!");
+						}
 						
 						usePanel.setVisible(true);
 						buyButton.setText("Buy");

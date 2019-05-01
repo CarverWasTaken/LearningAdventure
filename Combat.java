@@ -12,7 +12,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
+/*
+This is a game called "Learning Adventure." It is designed for children within the ages of 9-10 years old, and uses mathematics to practice and test academic skills!
+Copyright (C) 2019 Carver Ellis Simkins
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 public class Combat {
 	public static JPanel combatPanel, menuPanel, damagePanel, healthPanel, lossPanel;
 	public static String enemyName;
@@ -21,6 +37,7 @@ public class Combat {
 	public static Projectile projectile1;
 	public static Music battleMusic;
 	static Timer time;
+	JTextArea introArea = new JTextArea();
 	Font menuFont = new Font("Comic Sans MS", Font.PLAIN, 30);
 	Font GUIFont = new Font("Comic Sans MS", Font.PLAIN, 15);
 	public static JLabel enemyPanel, playerPanel;
@@ -100,7 +117,7 @@ public class Combat {
 		introPanel.setSize(500, 300);
 		introPanel.setBackground(Color.green);
 		
-		JTextArea introArea = new JTextArea();
+		
 		introArea.setSize(500, 300);
 		introArea.setFont(menuFont);
 		introArea.setLocation(0,0);
@@ -109,7 +126,7 @@ public class Combat {
 		introArea.setBackground(Color.green);
 		introArea.setLineWrap(true);
 		introArea.setWrapStyleWord(true);
-		introArea.setText("You got attacked by a " + enemyName + "! What do you do?");
+		
 		introPanel.add(introArea);
 		
 		JPanel buttonPanel = new JPanel();
@@ -253,7 +270,7 @@ public class Combat {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(count ==(int)((double)AdventureManager.currentEnemy.level*0.25)+5) { endCombat(); count = 0; target = 350;} 
+				if(count >=(int)((double)AdventureManager.currentEnemy.level*0.25)+5) { endCombat(); count = 0; target = 350;} 
 				;
 				
 			Random rand = new Random(); 
@@ -307,8 +324,10 @@ public class Combat {
 	}
 	
 public void startCombat() {
+	if(AdventureManager.currentNPC != null) AdventureManager.currentNPC.hideDialogue();
 	healthDisplay.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth);
 	Image = AdventureManager.currentEnemy.leftImage;
+	if(AdventureManager.currentEnemy != null) introArea.setText("You got attacked by a " + AdventureManager.currentEnemy.name + "! What do you do?");
 	enemyPanel.setIcon(Image);
 	count = 0;	
 	AdventureManager.mainPanel.setVisible(true);
@@ -331,6 +350,7 @@ public void startCombat() {
 		inCombat = true;
 		AdventureManager.currentRoom.t.stop();
 		AdventureManager.mainPanel.setVisible(false);
+		if(AdventureManager.currentEnemy != null) introArea.setText("You got attacked by a " + AdventureManager.currentEnemy.name + "! What do you do?");
 		menuPanel.setVisible(true);
 		
 	}
@@ -374,7 +394,7 @@ public void startCombat() {
 		
 		
 //		AdventureManager.dialogueBox("You defeated the " + enemyName + "!\nYou got " + enemyReward + " gold!" );
-		AdventureManager.gold += enemyReward;
+		if(Adventurer.health>0)AdventureManager.gold += enemyReward;
 		AdventureManager.healthInfo.setText("Health: " + Adventurer.health + "/" + Adventurer.maxHealth + "   Gold: " + AdventureManager.gold );
 		AdventureManager.dataPanel.setVisible(true);
 	}
